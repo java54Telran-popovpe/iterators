@@ -30,13 +30,14 @@ public class RangePredicate extends Range {
 	private class RangePredicateIterator implements Iterator<Integer>{
 		
 		private Integer currentElement = min;
-		
-		public RangePredicateIterator( ) {
-			findNextValidElement();
-		}
-		
+		private boolean currElementSetToNextPredicateSatisfiedPosition = false;
+
 		@Override
 		public boolean hasNext() {
+			if (!currElementSetToNextPredicateSatisfiedPosition) {
+				findNextValidElement();
+				currElementSetToNextPredicateSatisfiedPosition = true;
+			}
 			return currentElement <= max;
 		}
 		
@@ -51,12 +52,13 @@ public class RangePredicate extends Range {
 
 		//trying to find the next iterator element, taking into account predicate value end set 
 		//currentElement field on it
-		//the search starts from current currentElementField including it
+		//the search starts from the current currentElementField including it
 		//this method used in constructor and next() methods
 		private void findNextValidElement() {
 			while( currentElement <= max &&  predicate != null && predicate.negate().test(currentElement) ) {
 				currentElement++;
 			}
+			
 		}
 	}
 }
