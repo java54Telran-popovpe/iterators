@@ -53,9 +53,11 @@ public class RangePredicate extends Range {
 		//currentElement field on it
 		//the search starts from current currentElementField including it
 		//this method used in constructor and next() methods
-		private void findNextValidElement() {
-			while( currentElement <= max &&  predicate != null && predicate.negate().test(currentElement) ) {
-				currentElement++;
+		private void findNextValidElement() {		
+			if ( predicate != null ) {
+				while( currentElement <= max && predicate.negate().test(currentElement)) {
+					currentElement++;
+				}
 			}
 		}
 	}
